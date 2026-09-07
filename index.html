@@ -753,6 +753,62 @@ Opção 3..."></textarea>
 
   <!-- INITIAL DATA & SCRIPT LOGIC -->
   <script>
+    // Função para carregar o arquivo JSON enviado ao lado do index.html
+async function loadExternalJSON() {
+  try {
+    // O ?v= força o navegador a buscar a versão mais recente sem usar o cache
+    const response = await fetch('scripts-vendas.json?v=' + new Date().getTime());
+    if (response.ok) {
+      const data = await response.json();
+      if (Array.isArray(data) && data.length > 0) {
+        scriptsData = data;
+      }
+    }
+  } catch (error) {
+    console.log("Usando dados padrão ou erro ao ler o JSON:", error);
+  } finally {
+    renderCards();
+  }
+}
+
+// Inicialização da página
+document.addEventListener('DOMContentLoaded', () => {
+  renderCategories();
+  loadExternalJSON(); // Carrega o scripts-vendas.json do seu GitHub automaticamente!
+
+  // Listeners das variáveis do topo
+  ['var-nome', 'var-link', 'var-clipb', 'var-valor', 'var-num', 'var-pix'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', refreshAllPreviews);
+  });
+
+  // Listener da busca
+  const searchEl = document.getElementById('search-input');
+  if (searchEl) {
+    searchEl.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderCards();
+    });
+  }
+
+  // Listeners do Modal (Adicionar / Editar)
+  document.getElementById('btn-add')?.addEventListener('click', () => openEditModal());
+  document.getElementById('modal-close')?.addEventListener('click', closeEditModal);
+  document.getElementById('modal-cancel')?.addEventListener('click', closeEditModal);
+  document.getElementById('modal-save')?.addEventListener('click', saveModalData);
+
+  document.getElementById('type-text')?.addEventListener('change', () => toggleTypeFields('text'));
+  document.getElementById('type-options')?.addEventListener('change', () => toggleTypeFields('options'));
+
+  // Listeners de Exportação / Importação manual
+  document.getElementById('btn-export')?.addEventListener('click', exportJSON);
+  document.getElementById('file-import')?.addEventListener('change', importJSON);
+
+  // Alterar tema Claro/Escuro
+  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark');
+  });
+});
     // INITIAL ESPANSO BASE DATA
     const defaultSnippets = [
       { id: "1", trigger: "psf", label: "Serviços fotográficos", category: "geral", replace: "Prestação de serviços fotográficos" },
