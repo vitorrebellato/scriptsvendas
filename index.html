@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scripts de Vendas - Vitor Rebellato Fotografia</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.5);
+      border-radius: 4px;
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fbf7f5',
+              100: '#f6eee9',
+              500: '#8c6b58',
+              600: '#755442',
+              700: '#5c4031',
+              800: '#483226',
+              900: '#38271e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen transition-colors duration-200">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-30 bg-white/90 dark:bg-gray-800/90 backdrop-blur border-b border-gray-200 dark:border-gray-700 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-4">
+      
+      <div class="flex items-center gap-3">
+        <div class="p-2 bg-brand-500 text-white rounded-lg shadow-sm">
+          <i data-lucide="message-square" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold leading-tight">Scripts de Vendas</h1>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Espanso Web Panel & Fast Copy</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons Header -->
+      <div class="flex items-center flex-wrap gap-2">
+        <button id="btn-add" class="px-3 py-1.5 text-xs font-semibold bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition flex items-center gap-1.5 shadow-sm">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          <span>Novo Script</span>
+        </button>
+
+        <button id="btn-export" class="px-3 py-1.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition flex items-center gap-1.5 shadow-sm">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          <span>Exportar (.json)</span>
+        </button>
+
+        <label class="px-3 py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition flex items-center gap-1.5 shadow-sm cursor-pointer">
+          <i data-lucide="upload" class="w-4 h-4"></i>
+          <span>Importar (.json)</span>
+          <input type="file" id="file-import" accept=".json" class="hidden">
+        </label>
+
+        <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition">
+          <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+          <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- GLOBAL VARIABLES BAR -->
+    <section class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="sliders" class="w-4 h-4 text-brand-500"></i>
+          <h2 class="text-sm font-bold text-gray-700 dark:text-gray-200">Variáveis Personalizadas Globais</h2>
+        </div>
+        <span class="text-xs text-gray-400">Preencha aqui para aplicar em todos os scripts</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div>
+          <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Nome / Cliente</label>
+          <input type="text" id="var-nome" placeholder="Ex: Maria" class="w-full text-xs px-2.5 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Link</label>
+          <input type="text" id="var-link" placeholder="Ex: https://..." class="w-full text-xs px-2.5 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Link de Transferência/Clipb</label>
+          <input type="text" id="var-clipb" placeholder="Ex: https://..." class="w-full text-xs px-2.5 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Valor (R$)</label>
+          <input type="text" id="var-valor" placeholder="Ex: 150,00" class="w-full text-xs px-2.5 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Nº de Fotos</label>
+          <input type="text" id="var-num" placeholder="Ex: 25" class="w-full text-xs px-2.5 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Chave Pix</label>
+          <input type="text" id="var-pix" value="contato@vrebel.net" class="w-full text-xs px-2.5 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
+        </div>
+      </div>
+    </section>
+
+    <!-- SEARCH & CATEGORY FILTERS -->
+    <section class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <!-- Search Input -->
+      <div class="relative w-full md:w-80">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-gray-400"></i>
+        <input type="text" id="search-input" placeholder="Buscar por gatilho ou texto (ex: ;propo, guia)..." class="w-full text-xs pl-9 pr-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-500">
+      </div>
+
+      <!-- Categories Pills -->
+      <div id="category-pills" class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 custom-scrollbar">
+        <!-- JS render -->
+      </div>
+    </section>
+
+    <!-- CARDS GRID CONTAINER -->
+    <section id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- JS Render Cards -->
+    </section>
+
+  </main>
+
+  <!-- ENLARGED EDIT / ADD MODAL -->
+  <div id="modal-edit" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <!-- Enlarged Modal Window: max-w-5xl, height 85vh -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-5xl h-[85vh] flex flex-col border border-gray-200 dark:border-gray-700 overflow-hidden">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50">
+        <div class="flex items-center gap-2">
+          <i data-lucide="edit-3" class="w-5 h-5 text-brand-500"></i>
+          <h3 id="modal-title" class="text-base font-bold">Editar Script</h3>
+        </div>
+        <button id="modal-close" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-6 overflow-y-auto flex-1 space-y-4 custom-scrollbar">
+        <input type="hidden" id="edit-id">
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold mb-1">Título / Label</label>
+            <input type="text" id="edit-label" class="w-full text-sm px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold mb-1">Trigger / Gatilho</label>
+            <input type="text" id="edit-trigger" placeholder="Ex: ;propo" class="w-full text-sm px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold mb-1">Categoria</label>
+            <select id="edit-category" class="w-full text-sm px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
+              <option value="vendas">Vendas / Fluxos</option>
+              <option value="propostas">Propostas</option>
+              <option value="guias">Guias / Manuais</option>
+              <option value="questionarios">Questionários</option>
+              <option value="entregas">Entregas / Arquivos</option>
+              <option value="financeiro">Financeiro / Contratos</option>
+              <option value="geral">Geral / Outros</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 py-1">
+          <label class="inline-flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="edit-type" value="text" id="type-text" class="text-brand-500 focus:ring-brand-500" checked>
+            <span class="text-xs font-semibold">Texto Único</span>
+          </label>
+          <label class="inline-flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="edit-type" value="options" id="type-options" class="text-brand-500 focus:ring-brand-500">
+            <span class="text-xs font-semibold">Múltiplas Opções (Dropdown)</span>
+          </label>
+        </div>
+
+        <!-- Single Text View -->
+        <div id="field-single-text" class="space-y-1">
+          <label class="block text-xs font-semibold">Conteúdo da Mensagem</label>
+          <textarea id="edit-content" rows="12" class="w-full text-sm font-mono px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500 custom-scrollbar" placeholder="Digite o texto do script aqui... Usar [[nome]], [[link]], etc."></textarea>
+        </div>
+
+        <!-- Multiple Options View -->
+        <div id="field-options-text" class="space-y-2 hidden">
+          <label class="block text-xs font-semibold">Opções do Fluxo (Separadas por uma linha contendo apenas "---")</label>
+          <textarea id="edit-options-content" rows="12" class="w-full text-sm font-mono px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500 custom-scrollbar" placeholder="Opção 1...&#10;---&#10;Opção 2...&#10;---&#10;Opção 3..."></textarea>
+        </div>
+      </div>
+
+      <!-- Modal Footer (Fixed at bottom) -->
+      <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-end gap-3">
+        <button id="modal-cancel" class="px-4 py-2 text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition">Cancelar</button>
+        <button id="modal-save" class="px-5 py-2 text-xs font-semibold bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition shadow">Salvar Alterações</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INITIAL DATA & SCRIPT LOGIC -->
+  <script>
+    // INITIAL ESPANSO BASE DATA
+    const defaultSnippets = [
+      { id: "1", trigger: "psf", label: "Serviços fotográficos", category: "geral", replace: "Prestação de serviços fotográficos" },
+      { id: "2", trigger: "nbs", label: "Código NBS", category: "geral", replace: "1.1408.11.00" },
+      { id: "3", trigger: ";if", label: "Imagens Finalizadas", category: "geral", replace: "e_Imagens Finalizadas" },
+      { id: "4", trigger: ";pix", label: "Pix", category: "financeiro", replace: "Pix - contato@vrebel.net" },
+      { id: "5", trigger: ";insp", label: "Moodboard", category: "guias", replace: "Olá [[nome]]! Tudo bem?\nCom base no que conversamos e nas ideias que você me mandou, eu criei esse quadro de referências para nos inspirarmos durante o seu ensaio.\nEstá neste link: [[link]]\n\nVocê vai encontrar ideias de looks, poses, luzes, enquadramentos… A partir dele, vamos construir um ensaio lindo seu.\nO que você acha das ideias?" },
+      { id: "6", trigger: ";prooffotos", label: "Texto Proof Fotos", category: "entregas", replace: "Este é o sistema de visualização e aprovação de fotos.\n\nVocê também pode realizar observações e comentários nas fotos escolhidas.\n\nA cor das fotos neste sistema de escolha são provisórias. A cor das fotos editadas e finalizadas será diferente.\n\nCaso você queira rever as fotos, a seleção vai ficar salva para abrir novamente em outra ocasião.\n\nRecomendamos visualizar as fotos em uma tela grande de notebook ou televisão para poder ver todos os detalhes.\n\nAo finalizar a seleção, clique no botão \"avançar\" e em seguida em \"finalizar\". Assim, seremos notificados que você concluiu a seleção, e daremos início ao processo de edição. Boa escolha!" },
+      { id: "7", trigger: ";prooflivro", label: "Texto Proof Livro", category: "entregas", replace: "Este é o o sistema de visualização e aprovação de Álbuns\n\nVeja a prévia do seu álbum em dispositivo ou tela grande de notebook para poder ver todos os detalhes.\n\nVocê pode aprovar e sugerir alterações ao seu álbum antes de enviarmos para impressão. Você pode fazer anotações direto nas páginas e fotos, clicando nelas e escrevendo as observações. As funcionalidades de comentar e sugerir alterações não estão disponíveis em celular.\n\nAguardo o seu retorno!" },
+      { id: "8", trigger: ";extr", label: "WhatsApp Mensagem extras", category: "entregas", replace: "- Caso queira fotos extras, cada foto extra em arquivo de imagem fica R$30,00.\n- Caso queira fotos extras, cada foto extra em arquivo de imagem fica R$30,00, se quiser a foto em arquivo de imagem e impressa, o valor é R$35,00 cada." },
+      { id: "9", trigger: ";arqs", label: "Entregar Arquivos de 15x21", category: "entregas", replace: "Oii [[nome]] tudo bem? As fotos que você escolheu estão prontas! Olha elas nesse link aqui!\n\n[[clipb]]\n\nDá uma olhada lá! Se você gostou das fotos assim, as cores e tal… se precisar mudar algo, me avisa que eu mudo, e se estiver tudo certinho, me dá o ok que já consigo mandar para impressão!\n\nO acesso a este álbum é temporário, então faça o download de todas as fotos imediatamente. Obrigado!" },
+      { id: "10", trigger: ";arqlivro", label: "Entregar Arquivos de Livro", category: "entregas", replace: "Oii [[nome]] tudo bem? Seu livro está em produção. Nas próximas semanas eu te avisarei quando fica pronto e combinamos para você fazer a retirada. Enquanto isso que tal ver as fotos que você escolheu, prontas? Elas estão nesse link aqui!\n\n[[link]]\n\nDá uma olhada lá! O acesso a este álbum é temporário, então faça o download de todas as fotos imediatamente. Obrigado!" },
+      { id: "11", trigger: ";fp", label: "Entregar Todas Profissionais", category: "entregas", replace: "Oii [[nome]] tudo bem? As fotos que você escolheu estão prontas! Eu deixei elas no enquadramento original para ter bastante espaço para fazer artes, textos e ajustar o corte da melhor forma que você precisar. Olha elas nesse link aqui!\n\n[[link]]\n\nDá uma olhada lá! Se você gostou das fotos assim, as cores e tal… se precisar mudar algo, me avisa. O acesso a este álbum é temporário, então faça o download de todas as fotos imediatamente. Obrigado!" },
+      { id: "12", trigger: ";bela", label: "Entregar Arquivos Ensaio (Bela)", category: "entregas", replace: "Oii [[nome]] tudo bem? As fotos que você escolheu estão prontas! Elas estão em qualidade suficiente para postar nas redes sociais. Olha elas nesse link aqui!\n\n[[link]]\n\nDá uma olhada lá! Se você gostou das fotos assim, as cores e tal… se precisar mudar algo, me avisa. Obrigado!" },
+      { id: "13", trigger: ";gph", label: "Texto Google Photos", category: "entregas", replace: "As suas fotos em arquivo de imagem estão prontas, você já pode postar, compartilhar e aproveitar elas. Elas já estão em alta resolução.\nO acesso a este álbum é temporário, então faça o download de todas as fotos imediatamente.\nPara baixá-las em alta qualidade no seu dispositivo, siga os passos do vídeo acima. Para baixar suas fotos com mais facilidade no seu smartphone, utilize o app Google Fotos." },
+      { id: "14", trigger: ";pf", label: "Primeira Foto Brinde", category: "entregas", replace: "Bom dia [[nome]] tudo bem? Eu editei a primeira foto do seu ensaio!\n\nEspero que você goste da surpresa, achei esta foto muuuito linda de você...\n\nAproveite e curta seu brinde, ela está pronta para usar!" },
+      { id: "15", trigger: ";livro", label: "Entregar Livro", category: "entregas", replace: "Oii [[nome]] tudo bem? Seu livro está pronto!\n\nEstamos ansiosos para que você receba ele.\nPodemos combinar para você buscar? Se for melhor pra ti, podemos também calcular o custo de envio." },
+      { id: "16", trigger: ";caixa", label: "Entregar Caixa de Fotos", category: "entregas", replace: "Oii [[nome]] tudo bem? Suas fotos estão prontas!\n\nEstamos ansiosos para que você receba elas.\nPodemos combinar para você buscar elas? Se for melhor pra ti, podemos também calcular o custo de envio." },
+      { id: "17", trigger: ";edi", label: "Aviso Edição", category: "vendas", replace: "Bom dia!...\n\nJá separei suas fotos e elas foram encaminhadas para a edição. Esse processo leva em média 15 dias úteis, mas, se ficarem prontas antes, eu te aviso imediatamente. Até logo!" },
+      { id: "18", trigger: ";contr", label: "Contrato de Ensaio", category: "financeiro", replace: "Olá! Tudo bem?\n\nObrigado por seu pedido!\n\nEste é o link para você visualizar seu contrato:\n\n[[link]]\n\nNesse link, você vai precisar criar uma senha de acesso. Aí, poderá entrar no sistema, ler e assinar o contrato, sem precisar imprimir/escanear.\n\nPor favor verifique seus dados, itens do pedido, data, local, horário, forma de pagamento e demais detalhes.\n\nAproveito e encaminho a chave PIX para o pagamento do sinal de R$150,00:\n\nQualquer dúvida, pode me chamar aqui.\n\nObrigado!" },
+      { id: "19", trigger: ";cad", label: "Dados para Cadastro", category: "financeiro", replace: "Para darmos continuidade, preciso fazer o seu cadastro. Por gentileza preencha as informações abaixo e me manda a seguir para montarmos o seu contrato:\n\n*Nome Completo:*\n*E-mail:*\n*Telefone de contato:*\n*Data de nascimento:*\n*Identidade:*\n*CPF:*\n*Endereço residencial, nº, apto., bairro, cep, cidade:*" },
+      { id: "20", trigger: ";quest", label: "Questionário Pessoal", category: "questionarios", replace: "Eu tenho mais algumas perguntas para definirmos os últimos detalhes do seu ensaio neste link\n\n- https://forms.gle/pMJTHN8HVvyq18GA9\n\nPodes responder, por gentileza?" },
+      { id: "21", trigger: ";quest", label: "Questionário Profissional", category: "questionarios", replace: "Eu tenho mais algumas perguntas para definirmos os últimos detalhes do seu ensaio profissional neste link\n\n- https://forms.gle/MJW87RKGjshwZGTr7\n\nPodes responder, por gentileza?" },
+      { id: "22", trigger: ";quest", label: "Questionário Gestante", category: "questionarios", replace: "Eu tenho mais algumas perguntas para definirmos os últimos detalhes do seu ensaio neste link\n\n- https://forms.gle/18NQTbQCLCeM7rfMA\n\nPodes responder, por gentileza?" },
+      { id: "23", trigger: ";quest", label: "Questionário Família", category: "questionarios", replace: "Eu tenho mais algumas perguntas para definirmos os últimos detalhes do seu ensaio neste link\n\n- https://forms.gle/bpprsiGx65Td68nD9\n\nPodes responder, por gentileza?" },
+      { id: "24", trigger: ";guia", label: "Guia Cliente Pessoais", category: "guias", replace: "Eu vou compartilhar contigo um material que eu criei exclusivamente para orientar minhas clientes na organização do seu ensaio.\n\nManual da Cliente\nhttps://vrebel.notion.site/Manual-da-Cliente-Vitor-Rebellato-Fotografia-afeea1f461e04fb9848b97b384394993\n\nTem muitas dicas e informações nele, mas qualquer dúvida que surgir, pode me chamar aqui." },
+      { id: "25", trigger: ";guia", label: "Guia Cliente Profissionais", category: "guias", replace: "Eu vou compartilhar contigo um material que eu criei exclusivamente para orientar minhas clientes na organização do seu ensaio profissional.\n\nManual da Cliente - Profissionais\nhttps://vrebel.notion.site/Manual-da-Cliente-Profissionais-Vitor-Rebellato-Fotografia-d00ae317489243cdab825f9aea13964c\n\nTem muitas dicas e informações nele, mas qualquer dúvida que surgir, pode me chamar aqui." },
+      { id: "26", trigger: ";guia", label: "Guia Cliente Gestantes", category: "guias", replace: "Eu vou compartilhar contigo um material que eu criei exclusivamente para orientar minhas clientes na organização do seu ensaio de gestante.\n\nManual da Cliente - Gestantes\nhttps://vrebel.notion.site/Manual-da-Cliente-Gestante-Vitor-Rebellato-Fotografia-0f6ae2bfb8104635bd33ada38e624039\n\nTem muitas informações nele, mas qualquer dúvida que surgir, pode me chamar aqui." },
+      { id: "27", trigger: ";guia", label: "Guia Maquiagem", category: "guias", replace: "Eu vou compartilhar contigo um material de referência para maquiagem.\n\nAo final da página, tem duas galerias com inspirações de maquiagem que super funcionam para ensaios\n\nhttps://vrebel.notion.site/Guia-de-Maquiagem-4cb82ff044ff4ce0b973d14044a436e9?pvs=143\n\nVocê pode compartilhar esse material com sua maquiadora e definirem juntas sua make." },
+      { id: "28", trigger: ";propo", label: "Proposta Femininos 30+", category: "propostas", replace: "Nossas opções de ensaio:\n\nhttps://new.express.adobe.com/webpage/KSVmDcZW02e9I\n\nAcabei de te enviar a proposta no link acima. Ela está bem completa, com todos os detalhes sobre como será o dia das suas fotos.\nDá uma olhada com calma, e amanhã eu volto a te chamar pra saber qual das opções faz mais sentido pra você no momento. Pode ser assim?" },
+      { id: "29", trigger: ";propo", label: "Proposta Profissionais Experientes", category: "propostas", replace: "Nossas opções de ensaio:\n\nhttps://new.express.adobe.com/webpage/oJh6tsaxdMrg2\n\nAcabei de te enviar a proposta no link acima. Ela está bem completa, com todos os detalhes sobre como será o dia das suas fotos.\nDá uma olhada com calma, e amanhã eu volto a te chamar pra saber qual das opções faz mais sentido pra você no momento. Pode ser assim?" },
+      { id: "30", trigger: ";propo", label: "Proposta Gestantes", category: "propostas", replace: "Nossas opções de ensaio:\n\nhttps://new.express.adobe.com/webpage/WYusdyvFX5nkB\n\nAcabei de te enviar a proposta no link acima. Ela está bem completa, com todos os detalhes sobre como será o dia das suas fotos.\nDá uma olhada com calma, e amanhã eu volto a te chamar pra saber qual das opções faz mais sentido pra você no momento. Pode ser assim?" },
+      { 
+        id: "31", 
+        trigger: ";ve", 
+        label: "Fluxo de Vendas Geral", 
+        category: "vendas", 
+        options: [
+          "Olá! Claro posso lhe explicar em detalhes como funciona...",
+          "Antes da gente continuar nossa conversa, gostaria de anotar seu contato certinho aqui.\n\nPode me passar seu nome e sobrenome, por gentileza?",
+          "Agora, tenho algumas perguntas rápidas pra entender melhor o que você procura. Assim consigo te enviar uma proposta que realmente faça sentido pra você.",
+          "Pra começar, me conta como você conheceu o meu trabalho e o que te fez me procurar pra fazer suas fotos?",
+          "Antes de qualquer coisa, queria te ouvir... o que esse ensaio significaria para você nesse momento da sua vida?",
+          "E quando você se imagina no ensaio, pensa em fotos no estúdio com luz mais direcionada, algo natural ao ar livre, ou pensa em algum outro cenário?",
+          "Agora que entendi o que você busca, deixa eu te explicar rapidinho como funciona meu trabalho ✨\n\nTenho alguns pacotes de fotos, com diferentes quantidades de looks e fotos.\n\nDepois do ensaio, você escolhe suas favoritas e eu cuido de toda a edição, seguindo o estilo que você já viu no meu Instagram 🤩",
+          "Ah… mais um detalhe sobre meu trabalho... além das fotos digitais, você também pode receber suas fotos impressas, prontas para guardar com carinho.\nVocê prefere receber elas somente em formato digital ou também impressas?",
+          "Esses são os formatos disponíveis:\n\nEnsaios - https://vimeo.com/1195433199\nGestante - https://vimeo.com/1195433198\n\nDá uma olhada e me conta... qual deles combina mais com você?",
+          "Eu tenho um formato específico de ensaio para quem quer um ensaio pessoal lindo, e vou te encaminhar uma proposta bem completa. Quero que você veja todos os detalhes de como será o nosso dia de fotos. ✨",
+          "Só mais um detalhe... para quando você está pensando em agendar o nosso ensaio? Quero verificar a agenda e ver se conseguimos encaixar nesse dia.",
+          "Acabei de te enviar a proposta no link acima. Ela está bem completa, com todos os detalhes sobre como será o dia das suas fotos.\n\nDá uma olhada com calma, e amanhã eu volto a te chamar pra saber qual das opções faz mais sentido pra você no momento. Pode ser assim?",
+          "Bom dia!\n\nEstou retornando o contato sobre suas fotos e gostaria de saber o que achou da proposta que eu te encaminhei ontem.\n\nQual dessas opções você sente que mais combina com o que está buscando nesse momento?"
+        ] 
+      },
+      {
+        id: "32",
+        trigger: ";prof",
+        label: "Fluxo Profissionais",
+        category: "vendas",
+        options: [
+          "Olá, tudo bem? Que bom que estamos nos falando aqui pelo WhatsApp. Fica mais fácil de conversarmos.\nO objetivo aqui é entender o que está buscando e como poderei ajudar você a ter o melhor ensaio. Acha legal isso?",
+          "Olá! 😊 Antes da gente continuar nossa conversa, gostaria de anotar seu contato certinho aqui.\nPode me passar seu nome completo, por gentileza?",
+          "Muito obrigado, [[nome]]!\nAgora, tenho algumas perguntas rápidas (e importantes) pra entender melhor o que você procura — assim consigo te enviar uma proposta que realmente faça sentido pra você.",
+          "Pra começar, me conta como você conheceu o meu trabalho e o que te fez me procurar pra fazer suas fotos?",
+          "E também quero entender um pouquinho das suas expectativas com o meu trabalho.\nPra você, o que é essencial no trabalho de um fotógrafo?\nTem algo que você faz questão ou valoriza muito nesse processo?",
+          "Eu quero conhecer um pouco mais sobre você e seu trabalho. Me conta um pouquinho sobre o seu trabalho, em que área você atua e quem é o seu público — aquelas pessoas que você quer alcançar com mais força.\nTambém quero entender quais são seus objetivos com essas fotos. Isso me ajuda a pensar em enquadramentos, expressões e estilos que realmente combinem com você e com a imagem que você quer passar.",
+          "O que você espera que elas comuniquem?\nTem alguma mensagem, sentimento ou característica que você considera importante transmitir?",
+          "E me fala também onde você pretende usar esses retratos — site, redes sociais, apresentações, materiais de venda…",
+          "Você já tem em mente onde gostaria de fazer suas fotos?\nPode ser no estúdio ou em algum ambiente que tenha a ver com a proposta do seu trabalho. A ideia é escolher um lugar que te ajude a se sentir à vontade e que tenha conexão com a imagem que você quer transmitir.",
+          "Ah, e um detalhe importante... você tem alguma data específica em que precisa das fotos prontas?\nIsso me ajuda a organizar tudo direitinho e garantir que você receba as imagens no tempo certo."
+        ]
+      },
+      {
+        id: "33",
+        trigger: ";pos",
+        label: "Fluxo Pós-Venda",
+        category: "vendas",
+        options: [
+          "Olá [[nome]]... tudo bem?\n\nAgora que faz algum tempo que você recebeu suas fotos, gostaria de saber como foi sua experiência com o ensaio.\n\nVocê pode me falar um pouco sobre?",
+          "Outra coisa... você me autoriza a postar suas fotos nas minhas redes sociais, site?\n\nSe sim, tem alguma(s) que gostaria de guardar só pra você?",
+          "Posso te pedir mais um favor?\n\nSe puder contar rapidinho sobre sua experiência lá no Google, me ajuda muito! Assim mais pessoas encontram meu trabalho.\n\nDeixo o link aqui... https://g.page/v_rebel/review\n\nObrigado por esse gesto!",
+          "Estou revisando os arquivos do estúdio, encontrei as fotos lindas do seu ensaio que ainda não foram escolhidas. Antes de arquivar tudo, quero te oferecer a chance de vê-las mais uma vez.\n\nSe quiser escolher mais algumas fotos, posso te fazer uma oferta especial. ✨ Me avisa que eu te encaminho elas novamente!",
+          "Eu consigo manter a seleção aberta até o dia 5 de dezembro e te faço um valor especial... R$20,00 por cada foto em arquivo digital."
+        ]
+      }
+    ];
+
+    // APPLICATION STATE
+    let scriptsData = [...defaultSnippets];
+    let selectedCategory = 'all';
+    let searchQuery = '';
+
+    const categories = [
+      { id: 'all', label: 'Todos' },
+      { id: 'vendas', label: 'Fluxos de Vendas' },
+      { id: 'propostas', label: 'Propostas' },
+      { id: 'guias', label: 'Guias & Moodboard' },
+      { id: 'questionarios', label: 'Questionários' },
+      { id: 'entregas', label: 'Entregas & Arquivos' },
+      { id: 'financeiro', label: 'Financeiro' },
+      { id: 'geral', label: 'Geral' }
+    ];
+
+    // RENDER CATEGORY PILLS
+    function renderCategories() {
+      const container = document.getElementById('category-pills');
+      container.innerHTML = categories.map(cat => {
+        const active = cat.id === selectedCategory;
+        return `
+          <button 
+            onclick="setCategory('${cat.id}')"
+            class="px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition ${
+              active 
+                ? 'bg-brand-500 text-white shadow-sm' 
+                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+            }"
+          >
+            ${cat.label}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function setCategory(id) {
+      selectedCategory = id;
+      renderCategories();
+      renderCards();
+    }
+
+    // HELPER: PROCESS TEXT WITH VARIABLE REPLACEMENT
+    function processText(rawText) {
+      if (!rawText) return '';
+      const nome = document.getElementById('var-nome').value.trim() || '[[nome]]';
+      const link = document.getElementById('var-link').value.trim() || '[[link]]';
+      const clipb = document.getElementById('var-clipb').value.trim() || '[[clipb]]';
+      const valor = document.getElementById('var-valor').value.trim() || '[[valor]]';
+      const num = document.getElementById('var-num').value.trim() || '[[nº]]';
+
+      return rawText
+        .replace(/\[\[nome\]\]/gi, nome)
+        .replace(/\[\[cliente\]\]/gi, nome)
+        .replace(/\[\[link\]\]/gi, link)
+        .replace(/\[\[clipb\]\]/gi, clipb)
+        .replace(/\[\[valor\]\]/gi, valor)
+        .replace(/\[\[nº\]\]/gi, num)
+        .replace(/\[\[numero\]\]/gi, num);
+    }
+
+    // RENDER CARDS GRID
+    function renderCards() {
+      const container = document.getElementById('cards-container');
+      
+      const filtered = scriptsData.filter(item => {
+        const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
+        const query = searchQuery.toLowerCase();
+        const matchesSearch = !query || 
+          (item.trigger && item.trigger.toLowerCase().includes(query)) ||
+          (item.label && item.label.toLowerCase().includes(query)) ||
+          (item.replace && item.replace.toLowerCase().includes(query)) ||
+          (item.options && item.options.some(o => o.toLowerCase().includes(query)));
+
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
+            <i data-lucide="inbox" class="w-8 h-8 mx-auto text-gray-400 mb-2"></i>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Nenhum script encontrado.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const isOptions = Array.isArray(item.options) && item.options.length > 0;
+        
+        let contentHTML = '';
+        if (isOptions) {
+          contentHTML = `
+            <div class="mb-3">
+              <label class="block text-[11px] font-semibold text-gray-400 mb-1">Selecione uma opção de mensagem:</label>
+              <select id="select-opt-${item.id}" onchange="updateDropdownCardText('${item.id}')" class="w-full text-xs p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                ${item.options.map((opt, idx) => `<option value="${idx}">Passo ${idx + 1}: ${opt.substring(0, 45)}...</option>`).join('')}
+              </select>
+            </div>
+            <div id="preview-${item.id}" class="text-xs bg-gray-50 dark:bg-gray-900/60 p-3 rounded-lg border border-gray-200 dark:border-gray-700/60 font-mono whitespace-pre-wrap text-gray-700 dark:text-gray-300 min-h-[80px] max-h-[160px] overflow-y-auto custom-scrollbar">
+              ${escapeHtml(processText(item.options[0]))}
+            </div>
+          `;
+        } else {
+          contentHTML = `
+            <div id="preview-${item.id}" class="text-xs bg-gray-50 dark:bg-gray-900/60 p-3 rounded-lg border border-gray-200 dark:border-gray-700/60 font-mono whitespace-pre-wrap text-gray-700 dark:text-gray-300 min-h-[80px] max-h-[160px] overflow-y-auto custom-scrollbar mb-3">
+              ${escapeHtml(processText(item.replace || ''))}
+            </div>
+          `;
+        }
+
+        return `
+          <div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+            
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div>
+                  <span class="inline-block px-2 py-0.5 text-[10px] font-bold rounded bg-brand-50 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-800">
+                    ${escapeHtml(item.trigger)}
+                  </span>
+                  <h3 class="text-xs font-bold text-gray-800 dark:text-gray-100 mt-1">${escapeHtml(item.label)}</h3>
+                </div>
+
+                <div class="flex items-center gap-1">
+                  <button onclick="openEditModal('${item.id}')" title="Editar" class="p-1 text-gray-400 hover:text-brand-500 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                    <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                  <button onclick="deleteScript('${item.id}')" title="Excluir" class="p-1 text-gray-400 hover:text-red-500 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+
+              ${contentHTML}
+            </div>
+
+            <div class="pt-2 border-t border-gray-100 dark:border-gray-700/50 flex items-center justify-between">
+              <span class="text-[10px] text-gray-400 capitalize">${item.category}</span>
+              <button 
+                id="btn-copy-${item.id}"
+                onclick="copyCardText('${item.id}')" 
+                class="px-3 py-1.5 text-xs font-semibold bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition flex items-center gap-1.5 shadow-sm active:scale-95"
+              >
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                <span>Copiar Texto</span>
+              </button>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    // UPDATE CARD TEXT ON DROPDOWN CHANGE
+    function updateDropdownCardText(id) {
+      const item = scriptsData.find(s => s.id === id);
+      if (!item || !item.options) return;
+
+      const selectEl = document.getElementById(`select-opt-${id}`);
+      const previewEl = document.getElementById(`preview-${id}`);
+      if (!selectEl || !previewEl) return;
+
+      const selectedIdx = selectEl.value;
+      const rawText = item.options[selectedIdx] || '';
+      previewEl.innerText = processText(rawText);
+    }
+
+    // UPDATE ALL CARDS WHEN INPUT VARIABLES CHANGE
+    function refreshAllPreviews() {
+      scriptsData.forEach(item => {
+        const previewEl = document.getElementById(`preview-${item.id}`);
+        if (!previewEl) return;
+
+        if (Array.isArray(item.options) && item.options.length > 0) {
+          const selectEl = document.getElementById(`select-opt-${item.id}`);
+          const idx = selectEl ? selectEl.value : 0;
+          previewEl.innerText = processText(item.options[idx] || '');
+        } else {
+          previewEl.innerText = processText(item.replace || '');
+        }
+      });
+    }
+
+    // COPY FUNCTIONALITY
+    function copyCardText(id) {
+      const item = scriptsData.find(s => s.id === id);
+      if (!item) return;
+
+      let textToCopy = '';
+      if (Array.isArray(item.options) && item.options.length > 0) {
+        const selectEl = document.getElementById(`select-opt-${id}`);
+        const idx = selectEl ? selectEl.value : 0;
+        textToCopy = processText(item.options[idx] || '');
+      } else {
+        textToCopy = processText(item.replace || '');
+      }
+
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const btn = document.getElementById(`btn-copy-${id}`);
+        if (!btn) return;
+        const originalHTML = btn.innerHTML;
+        btn.classList.remove('bg-brand-500', 'hover:bg-brand-600');
+        btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+        btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> <span>Copiado!</span>`;
+        lucide.createIcons();
+
+        setTimeout(() => {
+          btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+          btn.classList.add('bg-brand-500', 'hover:bg-brand-600');
+          btn.innerHTML = originalHTML;
+          lucide.createIcons();
+        }, 1800);
+      });
+    }
+
+    // MODAL LOGIC (EDIT & ADD)
+    function openEditModal(id = null) {
+      const modal = document.getElementById('modal-edit');
+      const titleEl = document.getElementById('modal-title');
+      
+      if (id) {
+        const item = scriptsData.find(s => s.id === id);
+        if (!item) return;
+        titleEl.innerText = "Editar Script";
+        document.getElementById('edit-id').value = item.id;
+        document.getElementById('edit-label').value = item.label || '';
+        document.getElementById('edit-trigger').value = item.trigger || '';
+        document.getElementById('edit-category').value = item.category || 'vendas';
+
+        if (Array.isArray(item.options) && item.options.length > 0) {
+          document.getElementById('type-options').checked = true;
+          toggleTypeFields('options');
+          document.getElementById('edit-options-content').value = item.options.join('\n---\n');
+          document.getElementById('edit-content').value = '';
+        } else {
+          document.getElementById('type-text').checked = true;
+          toggleTypeFields('text');
+          document.getElementById('edit-content').value = item.replace || '';
+          document.getElementById('edit-options-content').value = '';
+        }
+      } else {
+        titleEl.innerText = "Novo Script";
+        document.getElementById('edit-id').value = '';
+        document.getElementById('edit-label').value = '';
+        document.getElementById('edit-trigger').value = '';
+        document.getElementById('edit-category').value = 'vendas';
+        document.getElementById('type-text').checked = true;
+        toggleTypeFields('text');
+        document.getElementById('edit-content').value = '';
+        document.getElementById('edit-options-content').value = '';
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+      document.getElementById('modal-edit').classList.add('hidden');
+    }
+
+    function toggleTypeFields(type) {
+      if (type === 'options') {
+        document.getElementById('field-single-text').classList.add('hidden');
+        document.getElementById('field-options-text').classList.remove('hidden');
+      } else {
+        document.getElementById('field-single-text').classList.remove('hidden');
+        document.getElementById('field-options-text').classList.add('hidden');
+      }
+    }
+
+    function saveModalData() {
+      const id = document.getElementById('edit-id').value;
+      const label = document.getElementById('edit-label').value.trim();
+      const trigger = document.getElementById('edit-trigger').value.trim();
+      const category = document.getElementById('edit-category').value;
+      const isOptions = document.getElementById('type-options').checked;
+
+      if (!label || !trigger) {
+        alert("Por favor, preencha o Título e o Gatilho!");
+        return;
+      }
+
+      let newScript = {
+        id: id || Date.now().toString(),
+        trigger,
+        label,
+        category
+      };
+
+      if (isOptions) {
+        const rawOpt = document.getElementById('edit-options-content').value;
+        const optionsArray = rawOpt.split('\n---\n').map(s => s.trim()).filter(Boolean);
+        if (optionsArray.length === 0) {
+          alert("Por favor, insira ao menos uma opção!");
+          return;
+        }
+        newScript.options = optionsArray;
+      } else {
+        const rawReplace = document.getElementById('edit-content').value;
+        newScript.replace = rawReplace;
+      }
+
+      if (id) {
+        const idx = scriptsData.findIndex(s => s.id === id);
+        if (idx !== -1) scriptsData[idx] = newScript;
+      } else {
+        scriptsData.unshift(newScript);
+      }
+
+      closeEditModal();
+      renderCards();
+    }
+
+    function deleteScript(id) {
+      if (confirm("Tem certeza que deseja excluir este script?")) {
+        scriptsData = scriptsData.filter(s => s.id !== id);
+        renderCards();
+      }
+    }
+
+    // EXPORT & IMPORT JSON
+    function exportJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(scriptsData, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "scripts-vendas.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          if (Array.isArray(importedData)) {
+            scriptsData = importedData;
+            renderCards();
+            alert("Scripts importados com sucesso!");
+          } else {
+            alert("Formato de arquivo JSON inválido.");
+          }
+        } catch (err) {
+          alert("Erro ao ler o arquivo JSON: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // INITIALIZATION & EVENT LISTENERS
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCategories();
+      renderCards();
+
+      // Inputs Variable Listener
+      ['var-nome', 'var-link', 'var-clipb', 'var-valor', 'var-num', 'var-pix'].forEach(id => {
+        document.getElementById(id).addEventListener('input', refreshAllPreviews);
+      });
+
+      // Search Listener
+      document.getElementById('search-input').addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        renderCards();
+      });
+
+      // Modal Listeners
+      document.getElementById('btn-add').addEventListener('click', () => openEditModal());
+      document.getElementById('modal-close').addEventListener('click', closeEditModal);
+      document.getElementById('modal-cancel').addEventListener('click', closeEditModal);
+      document.getElementById('modal-save').addEventListener('click', saveModalData);
+
+      document.getElementById('type-text').addEventListener('change', () => toggleTypeFields('text'));
+      document.getElementById('type-options').addEventListener('change', () => toggleTypeFields('options'));
+
+      // Export / Import Listeners
+      document.getElementById('btn-export').addEventListener('click', exportJSON);
+      document.getElementById('file-import').addEventListener('change', importJSON);
+
+      // Dark Theme Toggle
+      document.getElementById('theme-toggle').addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+      });
+    });
+  </script>
+</body>
+</html>
