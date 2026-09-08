@@ -684,7 +684,17 @@
     document.addEventListener('DOMContentLoaded', () => {
       renderCategories();
       loadExternalJSON();
-
+      // Atalho de teclado: Cmd+K / Ctrl+K para focar na busca
+      document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault(); // Impede o comportamento padrão do navegador
+          const searchInput = document.getElementById('search-input');
+          if (searchInput) {
+            searchInput.focus();
+            searchInput.select(); // Seleciona o texto atual para facilitar a reescrita
+          }
+        }
+      });
       ['var-nome', 'var-link', 'var-clipb', 'var-valor', 'var-num', 'var-pix'].forEach(id => {
         document.getElementById(id)?.addEventListener('input', refreshAllPreviews);
       });
