@@ -1,5 +1,23 @@
 [
   {
+    "id": "1788895809048",
+    "trigger": ";jf",
+    "label": "Jantar de Formatura",
+    "category": "vendas",
+    "options": [
+      "Olá! Claro! Posso te explicar direitinho como funciona o meu trabalho e como podemos fazer para registrar esse momento tão especial. ✨",
+      "Antes da gente continuar nossa conversa, gostaria de anotar seu contato certinho aqui.\n\nPode me passar seu nome e sobrenome, por gentileza?",
+      "Nesse momento eu tenho algumas perguntas importantes e rápidas para entender um pouquinho melhor como será esse momento.",
+      "Qual será a data e local do seu jantar?",
+      "O jantar é somente seu ou será um jantar com outros colegas que irão se formar contigo?",
+      "Quero entender também o que você mais gostaria de guardar desse dia.\nAlém das fotos do jantar, podemos registrar os momentos antes da colação, contigo usando a beca, em um local próximo. Acha interessante essa ideia?",
+      "Perfeito! Agora que entendi melhor o que você está planejando, deixa eu te explicar como funciona meu trabalho. ✨\n\nNo seu dia, minha ideia é registrar os momentos de uma forma leve e natural, acompanhando os momentos importantes, sem transformar tudo em fotos posadas.\n\nAlém das fotos mais espontâneas, também podemos fazer alguns retratos seus e fotos com as pessoas que fazem parte desse momento. \n\nQuero que você consiga aproveitar sua noite do que aconteceu. 🤍",
+      "Depois, você recebe as fotos dos melhores momentos, editadas em cor e tom, e mais algumas fotos que você pode escolher depois (as mais importantes) com ajustes e edição fina, prontas para guardar e reviver esse momento. O que acha disso?",
+      "Eu tenho uma proposta específica para o seu jantar de formatura e vou te encaminhar tudo bem explicadinho. ✨\n\nNa proposta você verá os Serviços Essenciais, que incluem as fotos do jantar.\n\nHá também os Serviços Adicionais, como a mini sessão antes da colação, que pode ser adicionado separadamente, se você quiser.",
+      "Olá! Estou passando para saber o que você achou da proposta que te encaminhei. Queria saber também se ficou alguma dúvida ou se alguma das opções fez mais sentido para o seu jantar."
+    ]
+  },
+  {
     "id": "1788807531545",
     "trigger": ";",
     "label": "Masculino",
